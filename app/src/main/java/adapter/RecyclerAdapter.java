@@ -36,8 +36,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Landscape currentObj = mData.get(position);
-        holder.setData(currentObj, position);
+        Landscape current = mData.get(position);
+        holder.setData(current, position);
+        holder.setListeners();
 
     }
 
@@ -46,7 +47,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return mData.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+    public void removeItem(int position){
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+    }
+
+    public void addItem(int position, Landscape landscape){
+        mData.add(position, landscape);
+//        notifyItemInserted(position);
+//        notifyItemRangeChanged(position, mData.size());
+        notifyDataSetChanged();
+    }
+
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView title;
         ImageView imgThumb, imgDelete, imgAdd;
@@ -68,6 +83,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             this.position = position;
             this.current = current;
 
+        }
+
+        public void setListeners(){
+            imgDelete.setOnClickListener(MyViewHolder.this);
+            imgAdd.setOnClickListener(MyViewHolder.this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()){
+                case R.id.img_row_delete:
+                    removeItem(position);
+                    break;
+                case R.id.img_row_copy:
+                    addItem(position, current);
+                    break;
+            }
         }
     }
 
