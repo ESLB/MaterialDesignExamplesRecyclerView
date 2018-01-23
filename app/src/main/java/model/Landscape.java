@@ -9,6 +9,15 @@ public class Landscape {
     private int imageID;
     private String title;
     private String description;
+    private boolean isSpecial;
+
+    public boolean isSpecial() {
+        return isSpecial;
+    }
+
+    public void setSpecial(boolean special) {
+        isSpecial = special;
+    }
 
     public int getImageID() {
         return imageID;
@@ -48,7 +57,7 @@ public class Landscape {
             }
 
             landscape.setTitle("Landscape " + (i+1));
-
+            landscape.setSpecial(i%3==0);
             dataList.add(landscape);
 
         }
